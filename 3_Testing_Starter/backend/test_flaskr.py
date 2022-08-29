@@ -16,11 +16,12 @@ class BookTestCase(unittest.TestCase):
         self.client = self.app.test_client
         self.database_name = "bookshelf_test"
         self.database_path = "postgresql://{}:{}@{}/{}".format(
-            "student", "student", "localhost:5432", self.database_name
+            "student", "", "localhost:5432", self.database_name
         )
         setup_db(self.app, self.database_path)
 
-        self.new_book = {"title": "Anansi Boys", "author": "Neil Gaiman", "rating": 5}
+        self.new_book = {"title": "Anansi Boys",
+                         "author": "Neil Gaiman", "rating": 5}
 
         # binds the app to the current context
         with self.app.app_context():
@@ -33,12 +34,15 @@ class BookTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
 
-
-# @TODO: Write at least two tests for each endpoint - one each for success and error behavior.
-#        You can feel free to write additional tests for nuanced functionality,
-#        Such as adding a book without a rating, etc.
-#        Since there are four routes currently, you should have at least eight tests.
-# Optional: Update the book information in setUp to make the test database your own!
+    # @TODO: Write at least two tests for each endpoint - one each for success and error behavior.
+    #        You can feel free to write additional tests for nuanced functionality,
+    #        Such as adding a book without a rating, etc.
+    #        Since there are four routes currently, you should have at least eight tests.
+    # Optional: Update the book information in setUp to make the test database your own!
+    def test_get_books(self):
+        res = self.client().get("/books")
+        print(res.get_json())
+        self.assertEqual(len(res.get_json()), 3)
 
 
 # Make the tests conveniently executable
