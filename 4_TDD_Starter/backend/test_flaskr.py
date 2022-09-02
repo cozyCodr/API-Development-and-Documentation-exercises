@@ -20,7 +20,8 @@ class BookTestCase(unittest.TestCase):
         )
         setup_db(self.app, self.database_path)
 
-        self.new_book = {"title": "Anansi Boys", "author": "Neil Gaiman", "rating": 5}
+        self.new_book = {"title": "Anansi Boys",
+                         "author": "Neil Gaiman", "rating": 5}
 
         # binds the app to the current context
         with self.app.app_context():
@@ -100,6 +101,23 @@ class BookTestCase(unittest.TestCase):
         res = self.client().post("/books", json=self.new_book)
         data = json.loads(res.data)
         pass
+
+    def test_find_book_by_title(self):
+        res = self.client().get("/books/search?title=Lullaby")
+        data = json.loads(res.data)
+
+        self.assertEqual(data['message'], "found")
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data["book_id"], 6)
+        self.assertEqual(data["book_rating"], 2)
+
+    def test_404_if_book_not_found(self):
+        res = self.client().get("/books/search?title=Bible")
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 0)
+        self.assertEqual(data["error"], "Not found")
+        self.assertEqual(data["success"], False)
 
 
 # Make the tests conveniently executable
