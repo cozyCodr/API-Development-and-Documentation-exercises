@@ -133,18 +133,35 @@ def create_app(test_config=None):
     #        If you use a different argument, make sure to update it in the frontend code.
     #        The endpoint will need to return success value, a list of books for the search and the number of books with the search term
     #        Response body keys: 'success', 'books' and 'total_books'
+    @app.route("/books/search")
+    def find_book_by_title():
+        try:
+            title = request.args.get('title')
+            book = Book.query.filter(Book.title == title).one_or_none()
+            if book is None:
+                abort(404)
+            return jsonify({
+                "message": "found",
+                "success": True,
+                "book_id": book.id,
+                "book_rating": book.rating,
+            })
+        except:
+            abort(500)
 
     @app.errorhandler(404)
     def not_found(error):
         return (
-            jsonify({"success": False, "error": 404, "message": "resource not found"}),
+            jsonify({"success": False, "error": 404,
+                    "message": "resource not found"}),
             404,
         )
 
     @app.errorhandler(422)
     def unprocessable(error):
         return (
-            jsonify({"success": False, "error": 422, "message": "unprocessable"}),
+            jsonify({"success": False, "error": 422,
+                    "message": "unprocessable"}),
             422,
         )
 
@@ -152,4 +169,11 @@ def create_app(test_config=None):
     def bad_request(error):
         return jsonify({"success": False, "error": 400, "message": "bad request"}), 400
 
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "internal server error",
+        }), 500
     return app

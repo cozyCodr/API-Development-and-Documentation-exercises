@@ -71,18 +71,18 @@ class BookTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "bad request")
 
-    def test_delete_book(self):
-        res = self.client().delete("/books/1")
-        data = json.loads(res.data)
+    # def test_delete_book(self):
+    #     res = self.client().delete("/books/1")
+    #     data = json.loads(res.data)
 
-        book = Book.query.filter(Book.id == 1).one_or_none()
+    #     book = Book.query.filter(Book.id == 1).one_or_none()
 
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data["success"], True)
-        self.assertEqual(data["deleted"], 1)
-        self.assertTrue(data["total_books"])
-        self.assertTrue(len(data["books"]))
-        self.assertEqual(book, None)
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data["success"], True)
+    #     self.assertEqual(data["deleted"], 1)
+    #     self.assertTrue(data["total_books"])
+    #     self.assertTrue(len(data["books"]))
+    #     self.assertEqual(book, None)
 
     def test_404_if_book_does_not_exist(self):
         res = self.client().delete("/books/1000")
@@ -111,13 +111,15 @@ class BookTestCase(unittest.TestCase):
         self.assertEqual(data["book_id"], 6)
         self.assertEqual(data["book_rating"], 2)
 
-    def test_404_if_book_not_found(self):
+    # def test_404_if_book_not_found(self):
         res = self.client().get("/books/search?title=Bible")
         data = json.loads(res.data)
+        print(data)
 
-        self.assertEqual(res.status_code, 0)
-        self.assertEqual(data["error"], "Not found")
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["error"], 404)
         self.assertEqual(data["success"], False)
+        self.assertEqual(data['message'], "resource not found")
 
 
 # Make the tests conveniently executable

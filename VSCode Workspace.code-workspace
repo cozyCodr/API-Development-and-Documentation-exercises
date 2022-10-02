@@ -1,0 +1,26 @@
+{
+  "folders": [
+	{
+		"name": "1_Requests_Starter",
+		"path": "1_Requests_Starter"
+	},
+	{
+		"name": "2_Errors_Starter",
+		"path": "2_Errors_Starter"
+	},
+	{
+		"name": "3_Testing_Starter",
+		"path": "3_Testing_Starter"
+	},
+	{
+		"path": "3_Testing_Review"
+	},
+	{
+		"path": "4_TDD_Starter"
+	},
+	{
+		"path": "4_TDD_Review"
+	}
+],
+  "settings": {}
+}

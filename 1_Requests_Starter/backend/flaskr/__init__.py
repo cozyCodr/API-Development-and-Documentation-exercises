@@ -128,10 +128,4 @@ def create_app(test_config=None):
             "total_books": len(formatted_books)
         })
 
-    @app.route("/books/search")
-    def find_book_by_title():
-        book = request.args.get('title')
-        return jsonify({
-
-        })
     return app
